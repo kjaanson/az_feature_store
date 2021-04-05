@@ -37,11 +37,11 @@ Development
 
 TODO
 ----
-  [ ] Create aggregation framework with Spark - per step total payments aggregation
-  [ ] Create aggregation framework with Azure Functions - per step total payments aggregation
-  [ ] Automate Azure CosmosDB setup with ARM template
-  [ ] Create generator for payments to help with testing
-  [ ] Create sample job with data loading from analytical container via Spark
+  - [ ] Create aggregation framework with Spark - per step total payments aggregation
+  - [ ] Create aggregation framework with Azure Functions - per step total payments aggregation
+  - [ ] Automate Azure CosmosDB setup with ARM template
+  - [ ] Create generator for payments to help with testing
+  - [ ] Create sample job with data loading from analytical container via Spark
 
   
 
