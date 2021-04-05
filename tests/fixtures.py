@@ -31,7 +31,41 @@ def payments_container():
 
     yield container
 
+    #containers = database.list_containers()
+    #if (any(container['id'] == container_name for container in containers)):
+    #    database.delete_container(container_name)
+    #    print('Container dropped')
+
+@pytest.fixture(scope='function')
+def payments_aggr_container():
+    endpoint = config.config['cosmosdb_config']['COSMOSDB_HOST']
+    key = config.config['cosmosdb_config']['COSMOSDB_KEY']
+    database_name = "aggregates"
+    container_name = "payments"
+
+    client = CosmosClient(endpoint, key)
+
+    database = client.create_database_if_not_exists(id=database_name)
+
+    #containers = database.list_containers()
+    #if (any(container['id'] == container_name for container in containers)):
+    #    database.delete_container(container_name)
+    #    print('Container dropped')
+
+    container = database.create_container_if_not_exists(
+        id=container_name, 
+        partition_key=PartitionKey(path="/aggregate"),
+        offer_throughput=400
+    )
+
+    print(f"Container {container} created ")
+
+    yield container
+
     containers = database.list_containers()
     if (any(container['id'] == container_name for container in containers)):
         database.delete_container(container_name)
-        print('Container dropped')
+        print(f'Container {container_name} dropped')
+
+
+

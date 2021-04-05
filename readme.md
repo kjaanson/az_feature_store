@@ -12,11 +12,11 @@ Dataset prototüüpimise jaoks
 Dev setup
 ---------
 ```
-conda create --name feature-store python pandas notebook scikit-learn azure-keyvault pytest tqdm
+conda create --name feature-store python pandas notebook scikit-learn azure-keyvault pytest tqdm pyspark=2.4.0
 conda activate feature-store
 pip install azure-cosmos
 
-conda env export --no-builds >> conda_env.yml
+conda env export --no-builds > conda_env.yml
 ```
 
 
