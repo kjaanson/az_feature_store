@@ -9,18 +9,39 @@ Dataset prototüüpimise jaoks
   * https://www.kaggle.com/ntnu-testimon/paysim1
   *
 
+Dev setup
+---------
+```
+conda create --name feature-store python pandas notebook scikit-learn azure-keyvault pytest tqdm
+conda activate feature-store
+pip install azure-cosmos
+
+conda env export --no-builds >> conda_env.yml
+```
+
+
 
 Development
 -----------
   * Create `local.settings.json`:
 ```json
 {
-    "config":{
+    "cosmosdb_config":{
         "COSMOSDB_HOST":"",
         "COSMOSDB_KEY":""
     }
 }
 ```
   * Download sim data to `data` folder from https://www.kaggle.com/ntnu-testimon/paysim1
+
+
+TODO
+----
+  [ ] Create aggregation framework with Spark - per step total payments aggregation
+  [ ] Create aggregation framework with Azure Functions - per step total payments aggregation
+  [ ] Automate Azure CosmosDB setup with ARM template
+  [ ] Create generator for payments to help with testing
+  [ ] Create sample job with data loading from analytical container via Spark
+
   
 
