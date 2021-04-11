@@ -1,13 +1,10 @@
-
-
-from pyspark import SparkContext, SQLContext
-from pyspark.sql import SparkSession
-import pyspark.sql.functions as F
-
-import config
-
 import string
 import random
+
+from pyspark import SQLContext
+from pyspark.sql import SparkSession
+
+import config
 
 def aggregate_payments(spark=None):
 
@@ -19,7 +16,7 @@ def aggregate_payments(spark=None):
 
     r = ''.join(random.choice(string.ascii_lowercase) for i in range(10))
 
-    readConfig = {
+    read_config = {
         "Endpoint": config.config['cosmosdb_config']['COSMOSDB_HOST'],
         "Masterkey": config.config['cosmosdb_config']['COSMOSDB_KEY'],
         "Database": "rawdata",
@@ -28,10 +25,10 @@ def aggregate_payments(spark=None):
         "ChangeFeedQueryName": "payments_raw",
         "ChangeFeedStartFromTheBeginning": "true",
         "InferStreamSchema": "true",
-        "ChangeFeedCheckpointLocation": "/tmp/checkpoints/payments_read_" + r 
+        "ChangeFeedCheckpointLocation": "/tmp/checkpoints/payments_read_" + r
     }
 
-    writeConfig = {
+    write_config = {
         "Endpoint": config.config['cosmosdb_config']['COSMOSDB_HOST'],
         "Masterkey": config.config['cosmosdb_config']['COSMOSDB_KEY'],
         "Database": "aggregates",
@@ -44,7 +41,7 @@ def aggregate_payments(spark=None):
 
     df = spark.readStream \
             .format("com.microsoft.azure.cosmosdb.spark.streaming.CosmosDBSourceProvider") \
-            .options(**readConfig) \
+            .options(**read_config) \
             .load()
 
     df.createOrReplaceTempView("payments")
@@ -65,8 +62,6 @@ def aggregate_payments(spark=None):
     stream_writer = sdf_aggregate.writeStream \
                 .format("com.microsoft.azure.cosmosdb.spark.streaming.CosmosDBSinkProvider") \
                 .outputMode("update") \
-                .options(**writeConfig)
+                .options(**write_config)
 
     return stream_writer
-
-
