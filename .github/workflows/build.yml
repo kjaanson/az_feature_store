@@ -1,0 +1,14 @@
+
+on: push
+
+name: Build a container
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      - id: build-hash
+        run: echo "::set-output name=build-hash::`echo $RANDOM | md5sum | head -c 20; echo;`"
