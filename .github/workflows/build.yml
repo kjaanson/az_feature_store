@@ -1,14 +1,16 @@
 
-on: [push, workflow_call]
+on: [workflow_call]
 
-name: Build a container
+name: Build model container
 
 jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    outputs:
+      build_hash: ${{steps.build_hash.outputs.build_hash}}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
-      - name: Set build hash
+      - id: build_hash
         run: echo "build_hash=`echo $RANDOM | md5sum | head -c 20; echo;` >> $GITHUB_OUTPUT"
