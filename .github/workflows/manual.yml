@@ -20,7 +20,7 @@ on:
 jobs:
 
   build:
-    uses: ./.github/workflows/build.yml@{ref}
+    uses: ./.github/workflows/build.yml
 
   # This workflow contains a single job called "greet"
   greet:
