@@ -10,5 +10,5 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
-      - id: build-hash
-        run: echo "::set-output name=build-hash::`echo $RANDOM | md5sum | head -c 20; echo;`"
+      - name: Set build hash
+        run: echo "build-hash=`echo $RANDOM | md5sum | head -c 20; echo;` >> $GITHUB_OUTPUT"
