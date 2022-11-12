@@ -22,11 +22,11 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     outputs:
-      build_hash: ${{steps.build_container.outputs.build_hash}}
+      build_hash: ${{steps.step1.outputs.build_hash}}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
-      - id: build_container
+      - id: step1
         run: echo "build_hash=`echo $RANDOM | md5sum | head -c 20; echo;` >> $GITHUB_OUTPUT"
 
   # This workflow contains a single job called "greet"
@@ -51,6 +51,4 @@ jobs:
       run: echo "Git branch:`git branch --show-current`"
 
     - name: Build hash from build workflow
-      env:
-        build_HASH: ${{ needs.build.outputs.build_hash }}
-      run: echo "$build_HASH"
+      run: echo ${{needs.build.outputs.build_hash}}
