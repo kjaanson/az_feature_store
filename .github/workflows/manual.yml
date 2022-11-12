@@ -32,5 +32,8 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    - name: Get git describe tag
+    - name: Git describe
       run: echo "Git describe:`git describe --always --dirty`"
+    
+    - name: Git branch
+      run: echo "Git branch:`git branch --show-current`"
