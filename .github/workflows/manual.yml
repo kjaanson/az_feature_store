@@ -8,18 +8,37 @@ on:
   workflow_dispatch:
     # Inputs the workflow accepts.
     inputs:
-      name:
+      training_config:
         # Friendly description to be shown in the UI instead of 'name'
-        description: 'Person to greet'
+        description: 'Training config'
         # Default value if no value is explicitly provided
-        default: 'World'
+        default: 'default'
         # Input has to be provided for the workflow to run
         required: true
+      upload_model:
+        description: 'Upload model to Vertex AI'
+        required: true
+        type: boolean
+        default: true
+      
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    outputs:
+      build_hash: ${{steps.step1.outputs.build_hash}}
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      - id: step1
+        run: echo "build_hash=`echo $RANDOM | md5sum | head -c 20; echo;`" >> $GITHUB_OUTPUT
+
   # This workflow contains a single job called "greet"
-  greet:
+  train:
+    name: Train
+    needs: build
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -28,3 +47,54 @@ jobs:
     # Runs a single command using the runners shell
     - name: Send greeting
       run: echo "Hello ${{ github.event.inputs.name }}"
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Git describe
+      run: echo "Git describe:`git describe --always --dirty`"
+    
+    - name: Git branch
+      run: echo "Git branch:`git branch --show-current`"
+
+    - name:
+      run: echo "Running training with config ${{ inputs.training_config }}, upload model ${{inputs.upload_model}}"
+
+    - name: Build hash from build workflow
+      run: echo ${{needs.build.outputs.build_hash}}
+
+  deploy_staging:
+    name: Deploy to staging
+    needs: train
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+    - name: Deploy to staging
+      run: echo "Deploying to staging"
+
+    - name: Run endpoint tests
+      run: echo "Run endpoint tests"
+
+  deploy_canary:
+    name: Deploy to canary
+    needs: train
+    runs-on: ubuntu-latest
+    environment: canary
+    steps:
+    - name: Deploy to canary
+      run: echo "Deploying to staging"
+
+    - name: Run endpoint tests
+      run: echo "Run endpoint tests"
+
+  deploy_prod:
+    name: Deploy to production
+    needs: train
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+    - name: Deploy to production
+      run: echo "Deploying to production"
+
+    - name: Run endpoint tests
+      run: echo "Run endpoint tests"
