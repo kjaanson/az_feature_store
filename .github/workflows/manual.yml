@@ -28,3 +28,9 @@ jobs:
     # Runs a single command using the runners shell
     - name: Send greeting
       run: echo "Hello ${{ github.event.inputs.name }}"
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Get git describe tag
+      run: echo "Git describe:`git describe --always --dirty`"
