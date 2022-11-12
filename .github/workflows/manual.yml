@@ -36,7 +36,8 @@ jobs:
         run: echo "build_hash=`echo $RANDOM | md5sum | head -c 20; echo;`" >> $GITHUB_OUTPUT
 
   # This workflow contains a single job called "greet"
-  greet:
+  train:
+    name: Train
     needs: build
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
@@ -61,3 +62,36 @@ jobs:
 
     - name: Build hash from build workflow
       run: echo ${{needs.build.outputs.build_hash}}
+
+  deploy_staging:
+    name: Deploy to staging
+    needs: train
+    runs-on: ubuntu-latest
+    steps:
+    - name: Deploy to staging
+      run: echo "Deploying to staging"
+
+    - name: Run endpoint tests
+      run: echo "Run endpoint tests"
+
+  deploy_canary:
+    name: Deploy to canary
+    needs: train
+    runs-on: ubuntu-latest
+    steps:
+    - name: Deploy to canary
+      run: echo "Deploying to staging"
+
+    - name: Run endpoint tests
+      run: echo "Run endpoint tests"
+
+  deploy_prod:
+    name: Deploy to production
+      needs: train
+      runs-on: ubuntu-latest
+      steps:
+      - name: Deploy to production
+        run: echo "Deploying to production"
+
+      - name: Run endpoint tests
+        run: echo "Run endpoint tests"
