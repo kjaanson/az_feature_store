@@ -44,4 +44,4 @@ jobs:
       run: echo "Git branch:`git branch --show-current`"
 
     - name: Build hash from build workflow
-      run: echo "Build output hash ${{ needs.build.outputs.build_hash}}"
+      run: echo ${{ needs.build.outputs.build_hash }}
