@@ -87,11 +87,11 @@ jobs:
 
   deploy_prod:
     name: Deploy to production
-      needs: train
-      runs-on: ubuntu-latest
-      steps:
-      - name: Deploy to production
-        run: echo "Deploying to production"
+    needs: train
+    runs-on: ubuntu-latest
+    steps:
+    - name: Deploy to production
+      run: echo "Deploying to production"
 
-      - name: Run endpoint tests
-        run: echo "Run endpoint tests"
+    - name: Run endpoint tests
+      run: echo "Run endpoint tests"
