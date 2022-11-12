@@ -67,6 +67,7 @@ jobs:
     name: Deploy to staging
     needs: train
     runs-on: ubuntu-latest
+    environment: staging
     steps:
     - name: Deploy to staging
       run: echo "Deploying to staging"
@@ -78,6 +79,7 @@ jobs:
     name: Deploy to canary
     needs: train
     runs-on: ubuntu-latest
+    environment: canary
     steps:
     - name: Deploy to canary
       run: echo "Deploying to staging"
@@ -89,6 +91,7 @@ jobs:
     name: Deploy to production
     needs: train
     runs-on: ubuntu-latest
+    environment: production
     steps:
     - name: Deploy to production
       run: echo "Deploying to production"
