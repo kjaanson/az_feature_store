@@ -27,7 +27,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
       - id: step1
-        run: echo "build_hash=`echo $RANDOM | md5sum | head -c 20; echo;` >> $GITHUB_OUTPUT"
+        run: echo "build_hash=`echo $RANDOM | md5sum | head -c 20; echo;`" >> $GITHUB_OUTPUT
 
   # This workflow contains a single job called "greet"
   greet:
